@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <title>Piclines</title>
+  <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #FFF1CA;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    h1 {
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 2rem;
+        font-weight: 300;
+    }
+
+    .camera-container {
+        position: relative;
+        margin-bottom: 30px;
+        border-radius: 15px;
+        overflow: hidden;
+        background: #000;
+        width: 100%;
+        max-width: 320px;
+        aspect-ratio: 6 / 9;
+        height: auto;
+        flex-shrink: 0;
+        flex-grow: 0;
+    }
+
+    #video,
+    canvas,
+    .captured-image {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        object-fit: cover;
+    }
+
+    #canvas {
+        display: none;
+    }
+
+    .camera-section {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .controls {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    button {
+        background: #2D4F2B;
+        color: white;
+        border: none;
+        padding: 12px 18px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        min-width: 150px;
+    }
+
+    button:hover {
+        background: #1f371e;
+    }
+
+    button:disabled {
+        background: #708A58;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .upload-progress {
+        display: none;
+        width: 100%;
+        height: 10px;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 3px;
+        margin: 15px 0;
+        margin-top: -60px;
+        overflow: hidden;
+    }
+
+    .upload-progress-bar {
+        height: 100%;
+        background: #FFB823;
+        width: 0%;
+        transition: width 0.3s ease;
+        border-radius: 3px;
+    }
+
+    .hidden {
+        background-color: #708A58;
+    }
+
+    .response {
+        display: none;
+        margin-top: -60px;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        width: 100%;
+        max-width: 320px;
+        box-sizing: border-box;
+        position: relative;
+        overflow: hidden;
+    }
+
+    #downloadBtn {
+        position: absolute;
+        top: 3px;
+        right: -35px;
+        color: #161616;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        z-index: 1;
+        min-width: auto;
+        padding: 8px;
+    }
+
+    #backBtn {
+        margin-top: 20px;
+        background-color: #2D4F2B;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        display: block;
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .status {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .status.error {
+        background-color: #ffebee;
+        color: #c62828;
+        border: 1px solid #ef5350;
+    }
+
+    .status.success {
+        background-color: #e8f5e8;
+        color: #2e7d32;
+        border: 1px solid #4caf50;
+    }
+
+    @media (orientation: landscape) {
+        .camera-container {
+            max-width: 480px;
+        }
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>Piclines</h1>
+    
+    <div class="camera-container">
+      <video id="video" autoplay playsinline></video>
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <div class="controls">
+      <button id="captureBtn">Capture</button>
+      <button id="uploadBtn" class="hidden" disabled>Go</button>
+    </div>
+
+    <div class="upload-progress">
+      <div class="upload-progress-bar"></div>
+    </div>
+
+    <div class="response">
+      <button id="downloadBtn">
+        <svg width="20" height="20"
+             fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" 
+             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </button>       
+      <div id="ai-content"></div>
+    </div>
+    
+    <div id="status"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <script>
+    let video = document.getElementById('video');
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    let stream = null;
+    let capturedImageData = null;
+    let lat = 0, long = 0;
+    let currentLocation = null;
+    let isCapturing = false;
+
+    // DOM elements
+    const captureBtn = document.getElementById('captureBtn');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const progressContainer = document.querySelector('.upload-progress');
+    const progressBar = document.querySelector('.upload-progress-bar');
+    const responseDiv = document.querySelector('.response');
+    const statusDiv = document.getElementById('status');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    // Initialize camera and location
+    initializeApp();
+
+    async function initializeApp() {
+      try {
+        const videoFacingMode = isMobileDevice() ? 'environment' : 'user';
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: videoFacingMode }
+        });
+        video.srcObject = stream;
+      } catch (e) {
+        console.error("Camera error:", e);
+        showStatus("Camera access denied or not available", "error");
+      }
+
+      // Get location
+      try {
+        const coords = await getCoords();
+        lat = coords.latitude;
+        long = coords.longitude;
+
+        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${long}`);
+        const data = await res.json();
+        currentLocation = data.display_name || "Unknown";
+        currentLocation = currentLocation.split(',')
+                                       .map(part => part.trim())
+                                       .slice(0, 3)
+                                       .join(', ');
+      } catch (err) {
+        console.error("Location failed:", err);
+        currentLocation = "Unknown";
+      }
+    }
+
+    function isMobileDevice() {
+      return /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < window.innerHeight;
+    }
+
+    function getCoords() {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          pos => resolve(pos.coords),
+          err => reject(err)
+        );
+      });
+    }
+
+    // Event listeners
+    captureBtn.addEventListener("click", handleCaptureClick);
+    uploadBtn.addEventListener("click", () => processImage(capturedImageData.split(',')[1]));
+    downloadBtn.addEventListener("click", downloadImage);
+
+    function handleCaptureClick() {
+      if (isCapturing) {
+        retakePhoto();
+      } else {
+        capturePhoto();
+      }
+    }
+
+    function capturePhoto() {
+      if (!video.videoWidth || !video.videoHeight) {
+        showStatus("Camera not ready. Please wait.", "error");
+        return;
+      }
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0);
+      capturedImageData = canvas.toDataURL('image/jpeg', 0.8);
+
+      // Hide video and show captured image
+      video.style.display = 'none';
+      const img = document.createElement('img');
+      img.src = capturedImageData;
+      img.className = 'captured-image';
+
+      const container = document.querySelector('.camera-container');
+      container.appendChild(img);
+
+      // Update UI
+      captureBtn.innerHTML = `
+        Retake
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+             stroke-linejoin="round"
+             style="margin-left: 8px; vertical-align: middle; transform: translateY(-2px);">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+          <path d="M3 3v5h5"></path>
+        </svg>`;
+
+      uploadBtn.classList.remove('hidden');
+      uploadBtn.disabled = false;
+      isCapturing = true;
+    }
+
+    function retakePhoto() {
+      // Reset UI
+      captureBtn.textContent = 'Capture';
+      responseDiv.style.display = 'none';
+      
+      // Remove captured image
+      const container = document.querySelector('.camera-container');
+      const img = container.querySelector('.captured-image');
+      if (img) img.remove();
+
+      // Show video again
+      video.style.display = 'block';
+      canvas.style.display = 'none';
+
+      uploadBtn.classList.add('hidden');
+      uploadBtn.disabled = true;
+      captureBtn.disabled = false;
+
+      // Reset back button
+      const backBtn = document.getElementById('backBtn');
+      if (backBtn) {
+        backBtn.remove();
+      }
+
+      // Reset variables
+      capturedImageData = null;
+      isCapturing = false;
+      
+      // Clear status
+      clearStatus();
+    }
+
+    async function processImage(imageBase64) {
+      try {
+        // Disable buttons and show progress
+        uploadBtn.disabled = true;
+        captureBtn.disabled = true;
+        uploadBtn.style.visibility = "hidden";
+        captureBtn.style.visibility = "hidden";
+        
+        showProgress(10);
+        showStatus("Analyzing image with AI...", "info");
+
+        // Step 1: Analyze image with AI
+        const analyzeResponse = await fetch('/api/analyze-image', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            image: imageBase64,
+            location: currentLocation
+          })
+        });
+
+        if (!analyzeResponse.ok) {
+          const errorData = await analyzeResponse.json();
+          throw new Error(errorData.message || 'Failed to analyze image');
+        }
+
+        const analyzeData = await analyzeResponse.json();
+        const aiResponse = analyzeData.poem;
+
+        showProgress(50);
+        showStatus("Uploading to GitHub...", "info");
+
+        // Step 2: Upload to GitHub
+        const timestamp = new Date().getTime();
+        const filename = `${timestamp}.jpg`;
+
+        const uploadResponse = await fetch('/api/upload-to-github', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            imageBase64: imageBase64,
+            filename: filename,
+            aiResponse: aiResponse,
+            location: currentLocation,
+            coordinates: { lat, long }
+          })
+        });
+
+        if (!uploadResponse.ok) {
+          const errorData = await uploadResponse.json();
+          throw new Error(errorData.message || 'Failed to upload to GitHub');
+        }
+
+        const uploadData = await uploadResponse.json();
+        
+        showProgress(100);
+        showStatus("Success! Image processed and uploaded.", "success");
+
+        // Display AI response
+        const aiContentDiv = document.getElementById('ai-content');
+        aiContentDiv.innerHTML = `<strong>AI Poem</strong><br>${aiResponse}`;
+        responseDiv.style.display = "block";
+
+        // Create and show back button
+        createBackButton();
+
+        // Hide progress after delay
+        setTimeout(() => {
+          progressContainer.style.display = 'none';
+          progressBar.style.width = '0%';
+        }, 1500);
+
+      } catch (error) {
+        console.error('Error processing image:', error);
+        showStatus(`Error: ${error.message}`, "error");
+        
+        // Re-enable buttons on error
+        uploadBtn.disabled = false;
+        captureBtn.disabled = false;
+        uploadBtn.style.visibility = "visible";
+        captureBtn.style.visibility = "visible";
+        
+        progressContainer.style.display = 'none';
+        progressBar.style.width = '0%';
+      }
+    }
+
+    function createBackButton() {
+      let backBtn = document.getElementById('backBtn');
+      if (!backBtn) {
+        backBtn = document.createElement('button');
+        backBtn.id = 'backBtn';
+        backBtn.textContent = 'Back';
+        backBtn.addEventListener('click', retakePhoto);
+        document.getElementById('container').appendChild(backBtn);
+      }
+      backBtn.style.display = 'block';
+    }
+
+    async function downloadImage() {
+      try {
+        downloadBtn.style.display = "none";
+        showStatus("Preparing download...", "info");
+        
+        const canvas = await html2canvas(document.body, {
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#FFF1CA'
+        });
+        
+        const dataURL = canvas.toDataURL('image/png');
+        
+        // Create download link
+        const link = document.createElement('a');
+        link.href = dataURL;
+        link.download = `piclines-${new Date().getTime()}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        downloadBtn.style.display = "block";
+        showStatus("Download complete!", "success");
+        
+        setTimeout(clearStatus, 3000);
+        
+      } catch (error) {
+        console.error('Download failed:', error);
+        downloadBtn.style.display = "block";
+        showStatus('Download failed. Please try again.', 'error');
+      }
+    }
+
+    function showProgress(percentage) {
+      progressContainer.style.display = "block";
+      progressBar.style.width = `${percentage}%`;
+    }
+
+    function showStatus(message, type) {
+      statusDiv.textContent = message;
+      statusDiv.className = `status ${type}`;
+      statusDiv.style.display = 'block';
+    }
+
+    function clearStatus() {
+      statusDiv.style.display = 'none';
+      statusDiv.textContent = '';
+      statusDiv.className = '';
+    }
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+    });
+  </script>
+</body>
+</html>
