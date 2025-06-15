@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       content: [
         { 
           type: "text", 
-          text: `Write a creative poem about what you see in this image. The photo was taken at: ${location || 'an unknown location'}. Make it artistic and engaging.` 
+          text: `Write a small creative poem about what you see in this image.` 
         },
         { 
           type: "image_url", 
