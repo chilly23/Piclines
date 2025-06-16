@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     }
 
     // Use environment variables for API keys (set in Vercel dashboard)
-    const apiKey = "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";
+    const apiKey = process.env.APIKEY;
     const model = "meta-llama/llama-4-maverick:free";
 
     const messages = [{
