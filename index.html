@@ -183,11 +183,153 @@
             max-width: 480px;
         }
     }
+
+    
+#aboutus{
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      height: 3px;
+      width: auto;
+      margin-bottom: 5px;
+      cursor: pointer;
+    }
+
+/* ✅ Tooltip near h1 */
+.tooltip-guide {
+  position: absolute;
+  max-width: 250px;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fffae8;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 10;
+  animation: fadeIn 0.3s ease;
+}
+
+.tooltip-guide::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 10px solid #fffae8;
+}
+
+/* ✅ About modal */
+#aboutModal {
+  display: none;
+  position: fixed;
+  z-index: 20;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(6px);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+#aboutModalContent {
+  
+  font-family: futura-pt-bold,sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  background: #FFFDCC;
+  padding: 20px;
+  max-width: 350px;
+  margin: 100px auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  
+}
+
+#aboutModalContent h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #333;
+}
+
+#aboutModalContent p {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+
+.star-container {
+    color: var(--sienna);
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    padding: 15px 7px 10px;
+    font-family: futura-pt,sans-serif;
+    font-size: 10px;
+    display: flex;
+}
+
+.spacer-10 {
+    width: 100%;
+    height: 2px;
+    padding-top: -20px;
+}
+
+.z-10{
+  color: white;
+  margin-top: -45px;
+}
+
+.arrow-container.short {
+    height: 25px;
+}
+
+.arrow-container {
+    z-index: 10;
+    flex-direction: row;
+    flex: none;
+    justify-content: center;
+    align-items: flex-end;
+    width: 20px;
+    height: 50px;
+    display: flex;
+    position: relative;
+}
+
+.img2 {
+    vertical-align: middle;
+    max-width: 100%;
+    display: inline-block;
+}
+
+.img2 {
+    overflow-clip-margin: content-box;
+    overflow: clip;
+}
+
+.star {
+    width: 100%;
+    display: block;
+    position: absolute;
+    inset: 0%;
+}
+
+#img3{
+  max-width: 100px;
+}
   </style>
 </head>
 <body>
   <div id="container">
-    <h1>Piclines</h1>
+    <h1>Piclines</h1><br>
+    <div id="aboutus"><img src="https://internetphonebook.net/images/kristoffer-flower.svg" alt=""></div>
     
     <div class="camera-container">
       <video id="video" autoplay playsinline></video>
@@ -204,7 +346,7 @@
     </div>
 
     <div class="response">
-      <button id="downloadBtn">
+      <button id="downloadBtn" onclick="download">
         <svg width="20" height="20"
              fill="none" stroke="currentColor" stroke-width="2"
              stroke-linecap="round" stroke-linejoin="round" 
@@ -220,6 +362,28 @@
     <div id="status"></div>
   </div>
 
+  <div id="tooltip" class="tooltip-guide" style="display: none;">
+    Click the moment, get the poems written by 'AI' for that moment.
+</div>
+
+<!-- About Modal -->
+<div id="aboutModal">
+  <div id="aboutModalContent">
+    <span style="background-color: #ebba51; color: #b56d21; display: inline; padding: 5px;"><strong>Hii, I'm Velan</strong></span><br><br>
+      <p>I make <span style="background-color: #2D4F2B; color: #efb8ae; display: inline; padding: 5px;"><strong>Robots, AI</strong></span> and I like <span style="background-color: #2D4F2B; color: #efb8ae; display: inline; padding: 5px;"><strong>Math</strong></span></p>
+      <p>Have a little fun and enjoy the lines</p>
+      <p>email: velane929@gmail.com</p>
+      <p>Insta: <a href="https://www.instagram.com/velaneeeee/" style="color: #444;">@velaneeeee</a></p>
+    <a id="closeAboutModal" class="star-container w-inline-block">
+      <img class = "img2" src="638bb57077d1c748cc9cf2dc_Star New.svg" 
+      loading="eager" id="section-1" alt="" class="star">
+      <div class="z-10">Ok, fine!!!!!</div>
+    </a>
+
+    <!-- <div><img id = "img3" src="Pixel_Art_Boys_in_Retro_Style---removebg-preview.png" alt="" srcset=""></div> -->
+  </div>
+</div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <script>
@@ -231,6 +395,38 @@
     let lat = 0, long = 0;
     let currentLocation = null;
     let isCapturing = false;
+
+    window.addEventListener('load', () => {
+      const tooltip = document.getElementById('tooltip');
+      const hasSeenTooltip = localStorage.getItem('piclines-tooltip-shown');
+
+      if (!hasSeenTooltip) {
+        tooltip.style.display = 'block';
+        localStorage.setItem('piclines-tooltip-shown', 'true');
+
+        setTimeout(() => {
+          tooltip.style.display = 'none';
+        }, 5000);}});
+
+     // About Modal Logic
+      const aboutBtn = document.getElementById('aboutus');
+      const modal = document.getElementById('aboutModal');
+      const closeBtn = document.getElementById('closeAboutModal');
+    
+      aboutBtn.addEventListener('click', () => {
+        modal.style.display = 'block';
+      });
+    
+      closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+    
+      // Optional: close when clicking outside the box
+      window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
 
     // DOM elements
     const captureBtn = document.getElementById('captureBtn');
@@ -337,37 +533,55 @@
       isCapturing = true;
     }
 
+    
     function retakePhoto() {
-      // Reset UI
-      captureBtn.textContent = 'Capture';
-      responseDiv.style.display = 'none';
-      
-      // Remove captured image
+      document.body.style.overflowY = "hidden";
+      document.getElementById('captureBtn').textContent = 'Capture';
+      document.querySelector('.response').style.display = 'none';
       const container = document.querySelector('.camera-container');
+
       const img = container.querySelector('.captured-image');
       if (img) img.remove();
+     
 
-      // Show video again
+      video = document.getElementById('video');
+      canvas = document.getElementById('canvas');
+      ctx = canvas.getContext('2d');
+      video.srcObject = stream;
       video.style.display = 'block';
-      canvas.style.display = 'none';
+      canvas.style.display = "none";
 
-      uploadBtn.classList.add('hidden');
-      uploadBtn.disabled = true;
-      captureBtn.disabled = false;
+      document.getElementById('uploadBtn').classList.add('hidden');
+      document.getElementById('captureBtn').disabled = false;
 
-      // Reset back button
-      const backBtn = document.getElementById('backBtn');
-      if (backBtn) {
-        backBtn.remove();
-      }
-
-      // Reset variables
       capturedImageData = null;
       isCapturing = false;
       
-      // Clear status
-      clearStatus();
+      document.querySelector('.response').innerHTML = `
+        <div id="ai-content"></div>
+        <button id="downloadBtn">
+            <svg width="20" height="20"
+                 fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" 
+                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          </button>`;
+
+        const backBtn = document.getElementById('backBtn');
+        if (backBtn) {
+        backBtn.style.display = 'none';
+        }
+
+        uploadBtn.style.visibility = "visible";
+captureBtn.style.visibility = "visible";
+
+
+
     }
+
 
     async function processImage(imageBase64) {
       try {
@@ -376,6 +590,7 @@
         captureBtn.disabled = true;
         uploadBtn.style.visibility = "hidden";
         captureBtn.style.visibility = "hidden";
+        document.body.style.overflowY = "auto";
         
         showProgress(10);
 
@@ -472,6 +687,7 @@
     async function downloadImage() {
       try {
         downloadBtn.style.display = "none";
+        document.getElementById('aboutus').style.display = "none";
         
         const canvas = await html2canvas(document.body, {
           useCORS: true,
@@ -490,6 +706,7 @@
         document.body.removeChild(link);
         
         downloadBtn.style.display = "block";
+        document.getElementById('aboutus').style.display = "block";
         
         setTimeout(clearStatus, 3000);
         
