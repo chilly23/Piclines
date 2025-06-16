@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     }
 
     // Use environment variables (set in Vercel dashboard)
-    const TOKEN = "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";
+    const TOKEN = process.env.GITHUB_TOKEN;
     const REPO = "chilly23/Piclines-Pb"; // format: username/repo-name
     const API_BASE = 'https://api.github.com';
 
