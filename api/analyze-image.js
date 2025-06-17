@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       content: [
         { 
           type: "text", 
-          text: `Write a small creative poem about what you see in this image.` 
+          text: `Write a small creative and deep poem about what you see in this image. You have freedom of any words.[max lines - 8, rhyming - optional]` 
         },
         { 
           type: "image_url", 
