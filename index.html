@@ -649,7 +649,14 @@ captureBtn.style.visibility = "visible";
 
         // Display AI response
         const aiContentDiv = document.getElementById('ai-content');
-        aiContentDiv.innerHTML = `<strong>AI Poem</strong><br>${aiResponse}`;
+        if (aiContentDiv) {
+            aiContentDiv.innerHTML = `<strong>AI Poem</strong><br><br>${aiResponse.replace(/\n/g, '<br>')}`;
+          } else {
+            responseDiv.innerHTML = `<strong>AI Poem</strong><br><br>${aiResponse.replace(/\n/g, '<br>')}`;
+
+          }
+        console.log('AI Response:');
+        console.log(aiResponse);
         responseDiv.style.display = "block";
 
         // Create and show back button
