@@ -47,7 +47,7 @@ export default async function handler(req, res) {
     
     if (data.choices && data.choices[0] && data.choices[0].message) {
       return res.status(200).json({ 
-        poem: data.choices[0].message.content,
+        poem: data.choices[0].message.content.replace(/\n/g, '<br>'),
         success: true 
       });
     } else {
