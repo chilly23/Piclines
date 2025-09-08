@@ -14,7 +14,8 @@ export default async function handler(req, res) {
 
     // Use environment variables for API keys (set in Vercel dashboard)
     const apiKey = process.env.APIKEY;
-    const model = "meta-llama/llama-4-maverick:free";
+    // const model = "meta-llama/llama-4-maverick:free";
+    const model = "openai/gpt-oss-20b:free";
 
     const messages = [{
       role: "user",
