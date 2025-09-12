@@ -372,7 +372,7 @@
 
       .upload-progress {
         grid-column: 1 / 2;
-        margin-top: 0;
+        margin-top: -50px;
       }
 
       .response {
@@ -482,7 +482,6 @@
     let lat = 0, long = 0;
     let currentLocation = null;
     let isCapturing = false;
-    const language = document.getElementById('languageInput')?.value || 'English';
 
     window.addEventListener('load', () => {
       const tooltip = document.getElementById('tooltip');
@@ -708,6 +707,8 @@ captureBtn.style.visibility = "visible";
         // Step 2: Upload to GitHub
         const timestamp = new Date().getTime();
         const filename = `${timestamp}.jpg`;
+        
+        const language = document.getElementById('languageInput')?.value || 'English';
 
         const uploadResponse = await fetch('/api/upload-to-github', {
           method: 'POST',
