@@ -49,6 +49,7 @@ export default async function handler(req, res) {
       uploadedAt: new Date().toISOString(),
       location,
       coordinates,
+      language,
       aiAnalysis: aiResponse,
       size: Math.round(imageBase64.length * 0.75)
     };
