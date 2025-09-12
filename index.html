@@ -623,7 +623,6 @@
     let lat = 0, long = 0;
     let currentLocation = null;
     let isCapturing = false;
-    const language = document.getElementById('languageInput')?.value || 'English';
 
     window.addEventListener('load', () => {
       const tooltip = document.getElementById('tooltip');
@@ -824,8 +823,7 @@ captureBtn.style.visibility = "visible";
         showProgress(10);
 
         // Step 1: Analyze image with AI
-        
-        const language = document.getElementById('languageInput')?.value || 'English';
+      
         const analyzeResponse = await fetch('/api/analyze-image', {
           method: 'POST',
           headers: {
@@ -833,7 +831,7 @@ captureBtn.style.visibility = "visible";
           },
           body: JSON.stringify({
             image: imageBase64,
-            language: language,
+            language: document.getElementById('languageInput')?.value || 'English',
             location: currentLocation
           })
         });
@@ -851,8 +849,6 @@ captureBtn.style.visibility = "visible";
         // Step 2: Upload to GitHub
         const timestamp = new Date().getTime();
         const filename = `${timestamp}.jpg`;
-        
-        const language = document.getElementById('languageInput')?.value || 'English';
 
         const uploadResponse = await fetch('/api/upload-to-github', {
           method: 'POST',
@@ -862,7 +858,7 @@ captureBtn.style.visibility = "visible";
           body: JSON.stringify({
             imageBase64: imageBase64,
             filename: filename,
-            language: language,
+            language: document.getElementById('languageInput')?.value || 'English',
             aiResponse: aiResponse,
             location: currentLocation,
             coordinates: { lat, long }
