@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { image, location } = req.body;
+    const { image, language, location } = req.body;
 
     if (!image) {
       return res.status(400).json({ error: 'Image data is required' });
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       content: [
         { 
           type: "text", 
-          text: `Write a small creative and deep poem about what you see in this image. You have freedom of any words.[max lines - 8, rhyming - optional, And don't say anything before/after the poem.. I want output only as poem.]` 
+          text: `Write a small creative and deep poem about what you see in this image. You have freedom of any words.[max lines - 8, rhyming - optional, And don't say anything before/after the poem.. I want output only as poem.] in ` + language 
         },
         { 
           type: "image_url", 
