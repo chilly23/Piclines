@@ -730,7 +730,7 @@ captureBtn.style.visibility = "visible";
           throw new Error(errorData.message || 'Failed to upload to GitHub');
         }
 
-        const uploadData = await uploadResponse.();
+        const uploadData = await uploadResponse.json();
         
         showProgress(100);
 
