@@ -360,11 +360,115 @@
   justify-content: center;
 }
 
-    #languageInput option:hover {
-      color: white;
-      background: #2D4F2B;
-    }
-      
+  #languageInput option:hover {
+  background-color: #2D4F2B;
+  color: white;
+}
+
+
+    
+/* Use Unicode initial letter as "icon" for each option */
+#languageInput option[value="Arabic"]::before {
+  content: "ع"; /* Arabic letter 'Ain' */
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="Bengali"]::before {
+  content: "আ"; /* Bengali letter A */
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="Chinese (Mandarin)"]::before {
+  content: "汉"; /* Han character */
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="English"]::before {
+  content: "A";
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="French"]::before {
+  content: "É";
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="German"]::before {
+  content: "Ä";
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="Gujarati"]::before {
+  content: "અ";
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="Hindi"]::before {
+  content: "अ";
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="Japanese"]::before {
+  content: "日";
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="Kannada"]::before {
+  content: "ಅ";
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="Korean"]::before {
+  content: "한";
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="Malayalam"]::before {
+  content: "അ";
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="Marathi"]::before {
+  content: "अ";
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="Portuguese"]::before {
+  content: "Ç";
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="Punjabi"]::before {
+  content: "ਅ";
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="Russian"]::before {
+  content: "Я";
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="Spanish"]::before {
+  content: "Ñ";
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="Tamil"]::before {
+  content: "அ";
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="Telugu"]::before {
+  content: "అ";
+  margin-right: 8px;
+  font-size: 18px;
+}
+#languageInput option[value="Urdu"]::before {
+  content: "ا";
+  margin-right: 8px;
+  font-size: 18px;
+}
+
 
 
     /* Desktop layout */
