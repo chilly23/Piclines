@@ -482,6 +482,7 @@
     let lat = 0, long = 0;
     let currentLocation = null;
     let isCapturing = false;
+    const language = document.getElementById('languageInput')?.value || 'English';
 
     window.addEventListener('load', () => {
       const tooltip = document.getElementById('tooltip');
@@ -678,8 +679,6 @@ captureBtn.style.visibility = "visible";
         uploadBtn.style.visibility = "hidden";
         captureBtn.style.visibility = "hidden";
         document.body.style.overflowY = "auto";
-
-        const language = document.getElementById('languageInput')?.value || 'English';
         
         showProgress(10);
 
