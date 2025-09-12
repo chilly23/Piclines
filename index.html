@@ -330,6 +330,42 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+#languageInput {
+  padding-left: 32px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #2D4F2B;
+  background: #FFF1CA;
+  color: #2D4F2B;
+  appearance: none;
+  position: relative;
+  min-width: 180px;
+}
+
+/* Icon (first letter) for each language in the dropdown */
+#languageInput option {
+  /* Use emoji or unicode for better browser support, but here we'll use ::before for initial letter */
+  position: relative;
+  padding-left: 28px;
+}
+
+#languageInput option::before {
+  content: attr(data-icon);
+  position: absolute;
+  left: 8px;
+  font-weight: bold;
+  font-size: 18px;
+  color: #FFB823;
+  background: #FFF1CA;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
     /* Desktop layout */
     @media (min-width: 1080px) {
       body {
@@ -683,6 +719,8 @@ captureBtn.style.visibility = "visible";
         showProgress(10);
 
         // Step 1: Analyze image with AI
+        
+        const language = document.getElementById('languageInput')?.value || 'English';
         const analyzeResponse = await fetch('/api/analyze-image', {
           method: 'POST',
           headers: {
