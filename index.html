@@ -330,18 +330,38 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#languageInput {
-  padding-left: 32px;
-  font-size: 16px;
-  appearance: none;
+.custom-select {
   position: relative;
-  min-width: 180px;
-  padding: 7px
+  width: 200px;
+  font-size: 16px;
 }
 
+.custom-select select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  padding: 7px 32px 7px 32px;
+  font-size: 16px;
+  background: white;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
 
-  #languageInput:hover {
-  background-color: #2D4F2B;
+.custom-select::after {
+  content: "▼";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.custom-select select option {
+  padding: 10px;
+}
+
+.custom-select select option:hover {
+  background-color: #2D4F2B; /* <- This won't work on real browsers */
   color: white;
 }
 
@@ -436,28 +456,28 @@
           <line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
       </button>
-      <label for="languageInput">Language:</label>
+      <label for="custom-select">Language:</label>
       <select id="languageInput">
-        <option value="Arabic">"ع" Arabic</option>
-        <option value="Bengali">"আ" Bengali</option>
-        <option value="Chinese (Mandarin)">"汉" Chinese (Mandarin)</option>
-        <option value="English" selected>"A" English</option>
-        <option value="French">"É" French</option>
-        <option value="German">"Ä" German</option>
-        <option value="Gujarati">"અ" Gujarati</option>
-        <option value="Hindi">"अ" Hindi</option>
-        <option value="Japanese">"日" Japanese</option>
-        <option value="Kannada">"ಅ" Kannada</option>
-        <option value="Korean">"한" Korean</option>
-        <option value="Malayalam">"അ" Malayalam</option>
-        <option value="Marathi">"अ" Marathi</option>
-        <option value="Portuguese">"Ç" Portuguese</option>
-        <option value="Punjabi">"ਅ" Punjabi</option>
-        <option value="Russian">"Я" Russian</option>
-        <option value="Spanish">"Ñ" Spanish</option>
-        <option value="Tamil">"அ" Tamil</option>
-        <option value="Telugu">"అ" Telugu</option>
-        <option value="Urdu">"ا" Urdu</option>
+        <option value="Arabic">ع Arabic</option>
+        <option value="Bengali">আ Bengali</option>
+        <option value="Chinese (Mandarin)">汉 Chinese (Mandarin)</option>
+        <option value="English" selected>A English</option>
+        <option value="French">É French</option>
+        <option value="German">Ä German</option>
+        <option value="Gujarati">અ Gujarati</option>
+        <option value="Hindi">अ Hindi</option>
+        <option value="Japanese">日 Japanese</option>
+        <option value="Kannada">ಅ Kannada</option>
+        <option value="Korean">한 Korean</option>
+        <option value="Malayalam">അ Malayalam</option>
+        <option value="Marathi">अ Marathi</option>
+        <option value="Portuguese">Ç Portuguese</option>
+        <option value="Punjabi">ਅ Punjabi</option>
+        <option value="Russian">Я Russian</option>
+        <option value="Spanish">Ñ Spanish</option>
+        <option value="Tamil">அ Tamil</option>
+        <option value="Telugu">అ Telugu</option>
+        <option value="Urdu">ا Urdu</option>
       </select>
       <div id="ai-content"></div>
     </div>
