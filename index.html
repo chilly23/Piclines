@@ -686,7 +686,6 @@
     function retakePhoto() {
       document.body.style.overflowY = "hidden";
       document.getElementById('captureBtn').textContent = 'Capture';
-      document.querySelector('.response').style.height = '70px';
       const container = document.querySelector('.camera-container');
 
       const img = container.querySelector('.captured-image');
@@ -707,6 +706,10 @@
       isCapturing = false;
       
       document.getElementById('ai-content').innerHTML = '';
+      if (window.innerWidth <= 768) {
+        document.querySelector('.response').style.display = 'none';
+      }
+    }
         const backBtn = document.getElementById('backBtn');
         if (backBtn) {
         backBtn.style.display = 'none';
