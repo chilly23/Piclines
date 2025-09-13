@@ -353,6 +353,26 @@
   color: #FFFFFF;
 }
 
+    @media (max-width: 1080px) {
+  #languageInput {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 15;
+    background: #fff;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  /* hide label text on mobile if needed */
+  .response label.custom-select {
+    display: none;
+  }
+}
+
+
 
     /* Desktop layout */
     @media (min-width: 1080px) {
@@ -384,7 +404,7 @@
 
       #aboutus{
       position: absolute;
-      left: 200px;
+      left: 250px;
       height: 3px;
       width: auto;
       margin-bottom: 5px;
@@ -406,7 +426,7 @@
 
       .upload-progress {
         grid-column: 1 / 2;
-        margin-top: -100px;
+        margin-top: -130px;
       }
 
       .response {
@@ -419,8 +439,8 @@
 
       #backBtn {
         grid-column: 1 / 2;
-        max-width: 100%;
-        margin-top: -100px;
+        max-width: 90%;
+        margin-top: -130px;
       }
     }
   </style>
@@ -659,7 +679,7 @@
     function retakePhoto() {
       document.body.style.overflowY = "hidden";
       document.getElementById('captureBtn').textContent = 'Capture';
-      document.querySelector('.response').style.display = 'none';
+      // document.querySelector('.response').style.display = 'none';
       const container = document.querySelector('.camera-container');
 
       const img = container.querySelector('.captured-image');
