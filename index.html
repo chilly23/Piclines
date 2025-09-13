@@ -347,15 +347,6 @@
   cursor: pointer;
 }
 
-.custom-select::after {
-  content: "▼";
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
 .custom-select select option {
   padding: 10px;
 }
@@ -393,6 +384,13 @@
         margin-bottom: 0;
       }
 
+      #aboutus{
+      height: 3px;
+      width: auto;
+      margin-bottom: 5px;
+      cursor: pointer;
+    }
+
       .camera-container {
         grid-area: camera;
         max-width: none;
@@ -408,7 +406,7 @@
 
       .upload-progress {
         grid-column: 1 / 2;
-        margin-top: -50px;
+        margin-top: -100px;
       }
 
       .response {
@@ -422,6 +420,7 @@
       #backBtn {
         grid-column: 1 / 2;
         max-width: 100%;
+        margin-top: -100px;
       }
     }
   </style>
