@@ -330,31 +330,27 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.custom-select {
-  position: relative;
-  width: 200px;
+#languageInput {
+  padding: 7px;
   font-size: 16px;
-  padding: 10px;
-}
-
-.custom-select select {
+  background-color: #FFFFFF;
   appearance: none;
-  -webkit-appearance: none;
-  width: 100%;
-  padding: 7px 32px 7px 32px;
-  font-size: 16px;
-  background: white;
-  border: 1px solid #ccc;
+  position: relative;
+  min-width: 180px;
+  height: 40px;
   cursor: pointer;
 }
 
-.custom-select select option {
-  padding: 10px;
+#languageInput option {
+  padding-left: 28px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
 }
 
-.custom-select select option:hover {
-  background-color: #2D4F2B; /* <- This won't work on real browsers */
-  color: white;
+#languageInput option:hover {
+  background-color: #161616;
+  color: #FFFFFF;
 }
 
 
@@ -383,7 +379,7 @@
       h1 {
         grid-area: title;
         margin-bottom: 0;
-        font-size: larger;
+        font-size: 3rem;
       }
 
       #aboutus{
