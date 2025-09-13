@@ -334,6 +334,7 @@
   position: relative;
   width: 200px;
   font-size: 16px;
+  padding: 7px;
 }
 
 .custom-select select {
@@ -385,6 +386,8 @@
       }
 
       #aboutus{
+      position: absolute;
+      left: 200px;
       height: 3px;
       width: auto;
       margin-bottom: 5px;
@@ -771,9 +774,9 @@ captureBtn.style.visibility = "visible";
         // Display AI response
         const aiContentDiv = document.getElementById('ai-content');
         if (aiContentDiv) {
-            aiContentDiv.innerHTML = `<strong>AI Poem</strong><br><br>${aiResponse.replace(/\n/g, '<br>')}`;
+            aiContentDiv.innerHTML = `<br><br><strong>AI Poem</strong><br><br>${aiResponse.replace(/\n/g, '<br>')}`;
           } else {
-            responseDiv.innerHTML = `<strong>AI Poem</strong><br><br>${aiResponse.replace(/\n/g, '<br>')}`;
+            responseDiv.innerHTML = `<br><br><strong>AI Poem</strong><br><br>${aiResponse.replace(/\n/g, '<br>')}`;
 
           }
         console.log('AI Response:');
