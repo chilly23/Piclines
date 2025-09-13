@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { imageBase64, filename, aiResponse, location, coordinates } = req.body;
+    const { imageBase64, filename, aiResponse, location, coordinates, language } = req.body;
 
     if (!imageBase64 || !filename) {
       return res.status(400).json({ error: 'Missing required data' });
