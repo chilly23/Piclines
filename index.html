@@ -432,7 +432,7 @@
       .upload-progress {
         grid-column: 1 / 2;
         margin-top: -130px;
-        max-width: 85%;
+        max-width: 90%;
       }
 
       .response {
@@ -447,8 +447,8 @@
         grid-column: 1 / 2;
         max-width: 30%;
         margin-top: -130px;
-        margin-left: 60%;
-        margin-right: 10%;
+        margin-left: 65%;
+        margin-right: 8%;
       }
     }
   </style>
@@ -687,9 +687,7 @@
     function retakePhoto() {
       document.body.style.overflowY = "hidden";
       document.getElementById('captureBtn').textContent = 'Capture';
-      if (window.innerWidth < 1080) {
-        document.querySelector('.response').style.display = 'none';
-      }
+      document.querySelector('.response').style.height = '70px';
       const container = document.querySelector('.camera-container');
 
       const img = container.querySelector('.captured-image');
@@ -728,10 +726,7 @@
         }
 
         uploadBtn.style.visibility = "visible";
-captureBtn.style.visibility = "visible";
-
-
-
+        captureBtn.style.visibility = "visible";
     }
 
 
@@ -801,9 +796,9 @@ captureBtn.style.visibility = "visible";
         // Display AI response
         const aiContentDiv = document.getElementById('ai-content');
         if (aiContentDiv) {
-            aiContentDiv.innerHTML = `<br><br><strong>AI Poem</strong><br><br>${aiResponse.replace(/\n/g, '<br>')}`;
+            aiContentDiv.innerHTML = `<br><br><strong>AI Poem</strong><br><br>${aiResponse.replace(/\n/g, '<br>')}<br>`;
           } else {
-            responseDiv.innerHTML = `<br><br><strong>AI Poem</strong><br><br>${aiResponse.replace(/\n/g, '<br>')}`;
+            responseDiv.innerHTML = `<br><br><strong>AI Poem</strong><br><br>${aiResponse.replace(/\n/g, '<br>')}<br>`;
 
           }
         console.log('AI Response:');
