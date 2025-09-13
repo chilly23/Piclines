@@ -684,7 +684,9 @@
     function retakePhoto() {
       document.body.style.overflowY = "hidden";
       document.getElementById('captureBtn').textContent = 'Capture';
-      // document.querySelector('.response').style.display = 'none';
+      if (window.innerWidth < 1080) {
+        document.querySelector('.response').style.display = 'none';
+      }
       const container = document.querySelector('.camera-container');
 
       const img = container.querySelector('.captured-image');
