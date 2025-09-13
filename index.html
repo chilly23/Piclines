@@ -21,6 +21,8 @@
         justify-content: center;
         align-items: center;
         padding: 20px;
+        overflow-x: hidden;
+        overflow-y: hidden;
     }
 
     h1 {
@@ -427,6 +429,7 @@
       .upload-progress {
         grid-column: 1 / 2;
         margin-top: -130px;
+        max-width: 80%;
       }
 
       .response {
@@ -439,8 +442,9 @@
 
       #backBtn {
         grid-column: 1 / 2;
-        max-width: 90%;
+        max-width: 30%;
         margin-top: -130px;
+        margin-left: 70%;
       }
     }
   </style>
@@ -475,7 +479,7 @@
           <line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
       </button>
-      <label class="custom-select">Language:</label>
+      <label for="languageInput">Language:</label>
       <select id="languageInput">
         <option value="Arabic">ع Arabic</option>
         <option value="Bengali">আ Bengali</option>
